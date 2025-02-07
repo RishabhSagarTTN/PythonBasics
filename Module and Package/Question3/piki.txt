@@ -1,0 +1,2 @@
+2025-02-05 22:27:02,509 INFO Inside the function
+2025-02-05 22:27:02,509 INFO Execution complete
