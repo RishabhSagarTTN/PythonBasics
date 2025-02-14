@@ -1,35 +1,44 @@
 import requests
 class Network:
-    initialize=False
-    instance=None
-    def __new__(cls,*args,**kwargs):
-        if cls.initialize==False:
-            cls.initialize=True
-            cls.instance=super(cls)
-            return cls.instance
-        else:
-            return cls.instance 
+    initialize = False
+    instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls.initialize:
+            cls.initialize = True
+            cls.instance = super().__new__(cls)
+        return cls.instance
 
 
-    def __init__(self,url,typeRequest='get',data=0,header=""):
+    def __init__(self,url,typeRequest='get',data=0,header="{"auth":""}",allow_headers=True,timeout=5):
         self.url=url
         self.typeRequest=typeRequest
         self.data=data
         self.header=header
         self.__typeR()
+        self.aheaders=allow_headers
+        self.timeout=timeout
 
 
     def __get(self):
         """function to send the get request to the server"""
         try:
-            datas=requests.get(self.url)
+            datas=requests.get(self.url,allow_redirects=self.header,timeout=self.timeout,headers=self.header)
             if(datas.status_code==200):
                 self.fdata=datas.json()
-                # print(self.fdata)
-            else:
-                raise Exception("Bad request")
+            print(self.fdata)
+            datas.raise_for_status()
+        # exception catch if any    
+        except requests.exceptions.ConnectionError:
+            print("connection error ! Really")
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTP error he sahi se daal: {e}")
+        except requests.exceptions.Timeout as e:
+            print(f"Timeout error he sahi se daalo na: {e}")            
+        except requests.exceptions.RequestException as e:
+            print(f"A request error: {e}")
         except Exception as e:
-            print(e)
+            print(e)    
 
 
     def __typeR(self):
@@ -42,9 +51,6 @@ class Network:
         except Exception as e:
             print(e)
 
-
-userRequest=Network("https://jsonplaceholder.typicode.com/posts")
-userRequest1=Network("https://jsonplaceholder.typicode.com/posts")
-print(userRequest is userRequest1)
-
+urlinput=input("Enter url")
+userRequest=Network(urlinput)
 
