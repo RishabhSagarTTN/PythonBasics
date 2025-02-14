@@ -15,9 +15,10 @@ class Network:
         self.typeRequest=typeRequest
         self.data=data
         self.header=header
-        self.__typeR()
         self.aheaders=allow_headers
         self.timeout=timeout
+        self.__typeR()
+       
 
 
     def __get(self):
@@ -30,7 +31,7 @@ class Network:
             datas.raise_for_status()
         # exception catch if any    
         except requests.exceptions.ConnectionError:
-            print("connection error ! Really")
+            print("connection error ! Really sahi dalo")
         except requests.exceptions.HTTPError as e:
             print(f"HTTP error he sahi se daal: {e}")
         except requests.exceptions.Timeout as e:
