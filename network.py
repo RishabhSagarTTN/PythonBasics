@@ -10,7 +10,7 @@ class Network:
         return cls.instance
 
 
-    def __init__(self,url,typeRequest='get',data=0,header="{"auth":""}",allow_headers=True,timeout=5):
+    def __init__(self,url,typeRequest='get',data=0,header='{"auth":""}',allow_headers=True,timeout=5):
         self.url=url
         self.typeRequest=typeRequest
         self.data=data
@@ -23,6 +23,7 @@ class Network:
 
     def __get(self):
         """function to send the get request to the server"""
+
         try:
             datas=requests.get(self.url,allow_redirects=self.header,timeout=self.timeout,headers=self.header)
             if(datas.status_code==200):
