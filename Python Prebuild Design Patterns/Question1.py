@@ -5,10 +5,13 @@ class Prime:
 
     def test_primeNumber(self,number):
         """Function to test weather the number is prime or not"""
-        for i in range(2,int(number**0.5)):
+        if number <2: return False
+        for i in range(2,int(number**0.5)+1):
             if number %i==0:
-                return False           
-        return True
+                return False
+        return True 
+
+                   
     
     def generate_primeNumber(self,number=1):
         """Function to generate the prime number starting from 2, it uses the generator so that it will generate the prime number every time you need
@@ -50,7 +53,7 @@ class Prime:
         """generate the prime number in the given range"""
         self.ans=[]
         if smallest<0:
-            return "Please enter the valid smallest number"
+            smallest=1
         temp=self.__core(largest)
         for i in temp:
             if i>smallest and i<largest:
