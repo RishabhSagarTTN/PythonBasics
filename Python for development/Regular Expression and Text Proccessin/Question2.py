@@ -28,29 +28,32 @@ class FermosaExtracter:
 
     def makeData(self,link,type,name,price,varigated):
         "making the dictionary of the particular plant which consist all the info aboutthe plant"
-        data=(requests.get(link).text)
-        temp=BeautifulSoup(data,"html.parser").find("div",class_="pd_summary").p.text
-        pattern=re.compile(r"\d\.\s*[ a-zA-Z]*",flags=re.I)
-        ans=pattern.findall(temp)
+        try:
+            data=(requests.get(link).text)
+            temp=BeautifulSoup(data,"html.parser").find("div",class_="pd_summary").p.text
+            pattern=re.compile(r"\d\.\s*[ a-zA-Z]*",flags=re.I)
+            ans=pattern.findall(temp)
 
-        #making of the temp dict for the particular plant 
-        tempdict={
-                    "Link":"",
-                    "Name":"",
-                    "Type":"",
-                    "Price":"",
-                    "Variegated":""
-                            }
-        tempdict["Link"]=link
-        tempdict["Price"]=price
-        tempdict["Type"]=type
-        tempdict["Name"]=name
-        tempdict["Variegated"]=varigated
-        if type=="combo":
-            for i in range(0,len(ans)):
-                tempnamecombo=ans[i].split(".")[1].split("Images")[0]
-                tempdict[f"Name{i+1}"]=tempnamecombo     
-        print(tempdict)           
+            #making of the temp dict for the particular plant 
+            tempdict={
+                        "Link":"",
+                        "Name":"",
+                        "Type":"",
+                        "Price":"",
+                        "Variegated":""
+                                }
+            tempdict["Link"]=link
+            tempdict["Price"]=price
+            tempdict["Type"]=type
+            tempdict["Name"]=name
+            tempdict["Variegated"]=varigated
+            if type=="combo":
+                for i in range(0,len(ans)):
+                    tempnamecombo=ans[i].split(".")[1].split("Images")[0]
+                    tempdict[f"Name{i+1}"]=tempnamecombo  
+        except Exception as e:
+            print(e)
+            return f"Error hogaya {e}"               
         return tempdict
 
 
