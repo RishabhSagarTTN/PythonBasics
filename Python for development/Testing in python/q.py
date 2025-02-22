@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import re
 
+
 class FermosaExtracter:
     """Fermosa class is used for fetching the data from the fermosa site which main
     aim is to fetch the the data of the plant from the site it consist three
@@ -27,7 +28,6 @@ class FermosaExtracter:
         
     def startProcess(self):
             """Start the extracting process"""
-            print("Extacting of data is being started")
             self.__core()
 
     def __makeData(self, link, type, name, price, varigated):
@@ -49,10 +49,12 @@ class FermosaExtracter:
                 for i in range(0,len(ans)):
                     tempnamecombo=ans[i].split(".")[1].split("Images")[0]
                     tempdict[f"Name{i+1}"]=tempnamecombo  
+            print(tempdict)        
         except Exception as e:
             print(e)
             return f"Error hogaya {e}"               
         return tempdict
+
 
     def __core(self):
         """it make the request to the page which consist all the plant in that page"""
@@ -81,23 +83,30 @@ class FermosaExtracter:
                         price=upper.find("p",class_="price-product mb-0").span.string
                         lister=self.__makeData(link,type,name,price,varigated)
                         self.ansdict.append(lister)
-                    number+=1  
+                    number+=1
+                        
                 else: 
                     break
                     
         except Exception as e:
             print(e)
+
         # calling the saveData method to save the data in the excel file    
         self.saveData()    
 
     def saveData(self):
         """saving the data to the excel file"""
         try:
+
             df = pd.DataFrame(self.ansdict)
             df.to_excel(self.outputname, index=False, engine='openpyxl')
             print("Execution completed please review your output file")
+            
         except Exception as e:
             print(f"Error during saving the data in excel {e}")      
 
-test=FermosaExtracter("https://fermosaplants.com/collections/sansevieria",8,"test.xlsx")
-test.startProcess()
+
+
+test=FermosaExtracter("https://fermosaplants.com/collections/sansevieria",8,"dcee.xlsx")
+
+
